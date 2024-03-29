@@ -1,6 +1,4 @@
-﻿using System.Buffers.Binary;
-using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using System.Collections;
 
 Console.WriteLine("Lab 6 (variant 7)");
 Console.Write("Enter the number of task (1 - 3): ");
