@@ -1,4 +1,6 @@
 ﻿using System.Buffers.Binary;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 Console.WriteLine("Lab 6 (variant 7)");
 Console.Write("Enter the number of task (1 - 3): ");
@@ -43,7 +45,18 @@ Console.Write("Enter the number of task (1 - 3): ");
                         }
                     }
                 } break;
-                case 3:{} break;
+                case 3:{
+                    Toyi toy1 = new Toyi("Doll", 10.99, "ToyCo", 3, "Plastic"); toy1.Show(); toy1.SomeMethod();
+
+                    ToyCollection toyCollection = new ToyCollection();
+                    toyCollection.Add(new Toyi("Car", 15.99, "ToyCars Inc.", 5, "Glass"));
+                    toyCollection.Add(new Toyi("Teddy Bear", 8.50, "Teddy Toys", 2, "Fabric"));
+
+                    foreach (Toyi toy in toyCollection){
+                        toy.Show();
+                        toy.SomeMethod();
+                    }
+                } break;
                 default:{
                     Console.WriteLine("Invalid choice!");
                     break;
@@ -225,14 +238,15 @@ class Toy : IProduct, IDotNetInterface{
     }
 
     public bool isMatch(string type){
-        return type == "Toy";
+        return typeof(Toy).Name == type;
     }
 
     public void SomeMethod(){
-        if(Material == "Glass" || Material == "Clay" || Material == "Porcelain"){
-            Console.WriteLine("Be carefull! Very risky and unsafe material!");
+        if (Material == "Glass" || Material == "Clay" || Material == "Porcelain"){
+            Console.WriteLine("Be careful! Very risky and unsafe material!");
         }
     }
+
 }
 
 class Book : IProduct, IDotNetInterface{
@@ -255,7 +269,7 @@ class Book : IProduct, IDotNetInterface{
     }
 
     public bool isMatch(string type){
-        return type == "Book";
+        return typeof(Book).Name == type;
     }
 
     public void SomeMethod(){
@@ -283,12 +297,55 @@ class SportEquipment : IProduct, IDotNetInterface{
     }
 
     public bool isMatch(string type){
-        return type == "Sport equipment";
+        return typeof(SportEquipment).Name == type;
     }
 
     public void SomeMethod(){
         if(Age >= 21){
             Console.WriteLine("Tip for the customer: before using teach with instructor!");
         }
+    }
+}
+
+class Toyi{
+    public string Name { get; set; }
+    public double Price { get; set; }
+    public string Manufacturer { get; set; }
+    public int Age { get; set; }
+    public string Material { get; set; }
+
+    public Toyi(string name, double price, string manufacturer, int age, string material){
+        Name = name;
+        Price = price;
+        Manufacturer = manufacturer;
+        Age = age;
+        Material = material;
+    }
+
+    public void Show(){
+        Console.WriteLine($"Toy: name = {Name}, price = {Price}, manufacturer = {Manufacturer}, age = {Age}, material = {Material}.");
+    }
+
+    public void SomeMethod(){
+        if (Material == "Glass" || Material == "Clay" || Material == "Porcelain")
+        {
+            Console.WriteLine("Be careful! Very risky and unsafe material!");
+        }
+    }
+}
+
+class ToyCollection : IEnumerable<Toyi>{
+    private List<Toyi> toys = new List<Toyi>();
+
+    public void Add(Toyi toy){
+        toys.Add(toy);
+    }
+
+    public IEnumerator<Toyi> GetEnumerator(){
+        return toys.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator(){
+        return toys.GetEnumerator();
     }
 }
